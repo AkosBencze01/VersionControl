@@ -20,13 +20,11 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             button1.Text = Resource1.Add;
-            label1.Text = Resource1.FirstName;
-            label1.Text = Resource1.LastName;
+            label2.Text = Resource1.FullName;
 
             User temp = new User()
             {
-                LastName = textBox1.Text,
-                FirstName = textBox2.Text
+                FullName = textBox2.Text
             };
             users.Add(temp);
         }
