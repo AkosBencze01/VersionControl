@@ -21,7 +21,7 @@ namespace WindowsFormsApp1
             InitializeComponent();
             button1.Text = Resource1.Add;
             label1.Text = Resource1.FirstName;
-            label1.Text = Resource1.LastName;
+            label2.Text = Resource1.LastName;
 
             User temp = new User()
             {
