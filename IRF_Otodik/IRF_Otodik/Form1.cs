@@ -20,8 +20,14 @@ namespace IRF_Otodik
         {
             InitializeComponent();
             dataGridView1.DataSource = Rates;
-            //GetRates();
 
+
+            RefreshData();
+        }
+
+        private void RefreshData()
+        {
+            Rates.Clear();
             ReadXml();
             chartRateData.DataSource = Rates;
             chartRateData.Series[0].ChartType = SeriesChartType.Line;
@@ -57,24 +63,36 @@ namespace IRF_Otodik
             }
         }
 
-        private static string GetRates()
+        private string GetRates()
         {
             MNBArfolyamServiceSoapClient mnbService = new MNBArfolyamServiceSoapClient();
 
             GetExchangeRatesRequestBody request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR",
-                startDate = "2020-01-01",
-                endDate = "2020-06-30"
+                currencyNames = comboBox1.SelectedItem.ToString(),
+                startDate = dateTimePicker1.Value.ToString(),
+                endDate = dateTimePicker2.Value.ToString(),
             };
 
             GetExchangeRatesResponseBody response = mnbService.GetExchangeRates(request);
-
             string result = response.GetExchangeRatesResult;
-
-            //MessageBox.Show(result);
-
+            mnbService.Close();
             return result;
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshData();
         }
     }
 }
