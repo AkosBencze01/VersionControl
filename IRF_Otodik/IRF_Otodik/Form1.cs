@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IRF_Otodik.MnbServiceReference;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +13,24 @@ namespace IRF_Otodik
 {
     public partial class Form1 : Form
     {
+        
         public Form1()
         {
             InitializeComponent();
+            MNBArfolyamServiceSoapClient mnbService = new MNBArfolyamServiceSoapClient();
+
+            GetExchangeRatesRequestBody request = new GetExchangeRatesRequestBody()
+            {
+                currencyNames = "EUR",
+                startDate="2020-01-01",
+                endDate="2020-06-30"
+            };
+
+            GetExchangeRatesResponseBody response = mnbService.GetExchangeRates(request);
+
+            string result = response.GetExchangeRatesResult;
+
+            //MessageBox.Show(result);
         }
     }
 }
