@@ -16,13 +16,33 @@ namespace IRF_Otodik
     public partial class Form1 : Form
     {
         BindingList<RateData> Rates = new BindingList<RateData>();
+        BindingList<string> Currencies = new BindingList<string>();
         public Form1()
         {
             InitializeComponent();
             dataGridView1.DataSource = Rates;
-
-
+            comboBox1.DataSource = Currencies;
+            GetCurrencies();
             RefreshData();
+        }
+
+       private void GetCurrencies()
+       {
+            MNBArfolyamServiceSoapClient m = new MNBArfolyamServiceSoapClient();
+            GetCurrenciesRequestBody request = new GetCurrenciesRequestBody();
+            GetCurrenciesResponseBody response = m.GetCurrencies(request);
+            string result = response.GetCurrenciesResult;
+
+            XmlDocument x = new XmlDocument();
+            x.LoadXml(result);
+            XmlElement item = x.DocumentElement;
+            int i = 0;
+            while (item.ChildNodes[0].ChildNodes[i]!=null)
+            {
+                Currencies.Add(item.ChildNodes[0].ChildNodes[i].InnerText);
+                i++;
+            }
+            m.Close();
         }
 
         private void RefreshData()
@@ -46,6 +66,10 @@ namespace IRF_Otodik
             xml.LoadXml(GetRates());
             foreach (XmlElement item in xml.DocumentElement)
             {
+                if(item.ChildNodes[0]== null)
+                {
+                    continue;
+                }
                 RateData rd = new RateData();
                 Rates.Add(rd);
                 rd.Currency = item.ChildNodes[0].Attributes["curr"].Value;
