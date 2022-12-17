@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,7 +67,19 @@ namespace IRF_06
                                       orderby x
                                       select x)
                                         .ToList();
-            MessageBox.Show(nyereségekRendezve[nyereségekRendezve.Count() / 5].ToString());
+            //MessageBox.Show(nyereségekRendezve[nyereségekRendezve.Count() / 5].ToString());
+
+            SaveFileDialog sfw = new SaveFileDialog();
+            sfw.ShowDialog();
+            using (StreamWriter sw = new StreamWriter(sfw.FileName))
+            {
+                sw.WriteLine("Időszak"+" "+"Nyereség");
+                for (int i = 0; i < Nyereségek.Count; i++)
+                {
+                    sw.WriteLine(i.ToString() + " " + Nyereségek[i].ToString());
+
+                }
+            };
 
         }
     }
