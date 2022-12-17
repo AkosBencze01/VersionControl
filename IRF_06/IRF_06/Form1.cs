@@ -18,6 +18,7 @@ namespace IRF_06
         List<Tick> Ticks;
 
         List<PortfolioItem> Portfolio = new List<PortfolioItem>();
+        List<decimal> Nyereségek = new List<decimal>();
 
         private void CreatePortfolio()
         {
@@ -48,9 +49,8 @@ namespace IRF_06
             InitializeComponent();
             Ticks = context.Tick.ToList();
             CreatePortfolio();
-            //dataGridView1.DataSource = Ticks;
+            dataGridView2.DataSource = Ticks;
 
-            List<decimal> Nyereségek = new List<decimal>();
             int intervalum = 30;
             DateTime kezdőDátum = (from x in Ticks select x.TradingDay).Min();
             DateTime záróDátum = new DateTime(2016, 12, 30);
@@ -69,17 +69,32 @@ namespace IRF_06
                                         .ToList();
             //MessageBox.Show(nyereségekRendezve[nyereségekRendezve.Count() / 5].ToString());
 
+            button1.Click += Button1_Click;
+
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            SaveButton();
+        }
+
+        private void SaveButton()
+        {
             SaveFileDialog sfw = new SaveFileDialog();
             sfw.ShowDialog();
             using (StreamWriter sw = new StreamWriter(sfw.FileName))
             {
-                sw.WriteLine("Időszak"+" "+"Nyereség");
+                sw.WriteLine("Időszak" + " " + "Nyereség");
                 for (int i = 0; i < Nyereségek.Count; i++)
                 {
                     sw.WriteLine(i.ToString() + " " + Nyereségek[i].ToString());
 
                 }
             };
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
 
         }
     }
