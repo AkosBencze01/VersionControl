@@ -1,5 +1,5 @@
 ﻿
-namespace IFR_06
+namespace IRF_06
 {
     partial class Form1
     {
